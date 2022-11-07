@@ -1,0 +1,40 @@
+{% extends 'base/dashboard_base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1>Food Category list page</h1>
+<table class="table table-borderless">
+    <thead class="border-bottom font-weight-bold">
+        <tr>
+            <td>Id</td>
+            <td>Restaurant Name</td>
+            <td>Food Category Name</td>
+            <td>
+                <a href="{% url 'restaurant:food_category_createview'  %}" class="btn btn-outline-success">
+                    <i class="fas fa-plus"></i> Add New
+                </a>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for food_category in foodcategory_list %}
+            <tr>
+                <td>{{food_category.id}}</td>
+                <td>{{food_category.restaurant.name}}</td>
+                <td>{{food_category.name}}</td>
+                <td>
+                    <a href="{% url 'restaurant:food_category_updateview' food_category.id %}" class="btn text-secondary px-0">
+                        <i class="far fa-edit fa-lg"></i>
+                    </a>
+                    <form action="{% url 'restaurant:food_category_deleteview' food_category.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

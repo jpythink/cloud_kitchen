@@ -1,0 +1,105 @@
+{% extends 'base/base.html'%}
+{% load static %}
+{% load cart %}
+{% load custom_filter %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1>Restaurants Page</h1>
+
+<div class="row">
+    <div id='foods'>
+        <div class="container-fluid mt-3">
+            <div class="row">
+
+                <!-- filter -->
+                <div class="col-lg-3 mx-auto">
+                    <div class="list-group">
+                        <a href="/restaurant-index/" class="list-group-item list-group-item-action ">All Restaurants</a>
+
+                        <div class="container mt-5" style="width: mx-auto">
+
+                            <label for="restaurant">Restaurant</label>
+                            <select class="form-select" aria-label="Default select example" id="restaurant"
+                                onchange="restaurant_field()">
+                                <option selected>Choose Restaurant</option>
+                                {% for i in restaurant %}
+                                <option value="{{i.id}}"
+                                    {% if request.GET.restaurant == i.id|lower %}selected{% endif %}>{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <br />
+
+                            <label for="food_category">Food Category</label>
+                            <select class="form-select" aria-label="Default select example" id="food_category"
+                                onchange="food_category_field()">
+                                <option selected>Choose Food Category</option>
+                                {% for i in food_category %}
+                                <option value="{{i.id}}"
+                                    {% if request.GET.food_category == i.id|lower %}selected{% endif %}>{{i.name}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                <!--end filter-->
+
+                <!-- all foods -->
+                <div class="col-lg-9 mx-auto">
+                    <div id='foods' class="row mx-auto">
+                        {% for food in foods %}
+                        <div class="card mx-auto mb-3" id={{food.id}} style="width: 18rem;">
+                            <img class="card-img-top" src="{{food.image.url}}" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-title">{{food.name}}</p>
+                                <p class="card-text"><b>{{food.price|currency}}</b></p>
+                                <p class="card-text"><b>{{food.description|slice:":100"}}</b></p>
+                                {{food | is_in_cart:request.session.cart }}
+                            </div>
+
+                            <div class="card-footer p-0 no-gutters">
+
+                                {% if food|is_in_cart:request.session.cart %}
+                                <div class="row no-gutters">
+                                    <form action="/restaurant-index/#{{food.id}}" class="col-2 " method="post">
+                                        {% csrf_token %}
+                                        <input hidden type="text" name='food' value='{{food.id}}'>
+                                        <input hidden type="text" name='remove' value='True'>
+                                        <input type="submit" value=" - " class="btn btn-block btn-light border-right">
+                                    </form>
+                                    <div class="text-center col">{{food|cart_quantity:request.session.cart}} in Cart
+                                    </div>
+                                    <form action="/restaurant-index/#{{food.id}}" class="col-2 " method="post">
+                                        {% csrf_token %}
+                                        <input hidden type="text" name='food' value='{{food.id}}'>
+                                        <input type="submit" value=" + " class="btn btn-block btn-light border-left">
+                                    </form>
+                                </div>
+                                {% else %}
+                                <form action="/restaurant-index/#{{food.id}}" method="POST" class="btn-block">
+                                    {% csrf_token %}
+                                    <input hidden type="text" name='food' value='{{food.id}}'>
+                                    <input type="submit" class="float-right btn btn-light  form-control"
+                                        value="Add To Cart">
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+<script>
+    var restaurant = {{request.GET.restaurant}};
+</script>
+<script src="{% static 'js/food.js' %}"></script>
+
+{% endblock js %}

@@ -1,0 +1,53 @@
+----: Cloud Kitchens  :----
+--> Models List
+1) CustomUsers - authentication
+- first_name
+- last_name
+- username
+- email
+- password
+- phone
+- dob
+- age
+- address
+- pincode
+- user_type
+    - as_user
+    - as_restaurant
+- created_at
+- updated_at
+
+2) Restaurant - Restaurant
+- user(FK)
+- name 
+- description
+- location
+- status
+    - open
+    - close
+
+3) FoodCategory - Restaurant
+- restaurant(FK)
+- name
+
+4) Food - Restaurant
+- food_category(FK)
+- name 
+- price
+- description
+- image
+
+5) Order - Restaurant
+- food(FK)
+- user(FK)
+- quantity
+- price
+- address
+- phone
+- date(default=datetime.datetime.today)
+- status 
+    - Pending Order
+    - Order Accepted
+    - Perparing Food
+    - Food On The Way
+    - Delivered

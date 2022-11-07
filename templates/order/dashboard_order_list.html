@@ -1,0 +1,52 @@
+{% extends 'base/dashboard_base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1>Order list page</h1>
+<table class="table table-borderless">
+    <thead class="border-bottom font-weight-bold">
+        <tr>
+            <td>Id</td>
+            <td>Date</td>
+            <td>Customer Name</td>
+            <td>Food Name</td>
+            <td>Quantity</td>
+            <td>Price</td>
+            <td>Address</td>
+            <td>Phone</td>
+            <td>Status</td>
+            {% comment %} <td>
+                <a href="#" class="btn btn-outline-success">
+                    <i class="fas fa-plus"></i> Add New
+                </a>
+            </td> {% endcomment %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_name in order_list %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{order_name.date}}</td>
+                <td>{{order_name.customer.first_name}}  {{order_name.customer.last_name}}</td>
+                <td>{{order_name.food}}</td>
+                <td>{{order_name.quantity}}</td>
+                <td>{{order_name.price}}</td>
+                <td>{{order_name.address}}</td>
+                <td>{{order_name.phone}}</td>
+                <td>{{order_name.get_status_display}}</td>
+                <td>
+                    <a href="{% url 'restaurant:order_updateview' order_name.id %}" class="btn text-secondary px-0">
+                        <i class="far fa-edit fa-lg"></i>
+                    </a>
+                    <form action="#" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

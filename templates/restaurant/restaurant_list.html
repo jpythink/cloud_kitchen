@@ -1,0 +1,44 @@
+{% extends 'base/dashboard_base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1>Restaurant list page</h1>
+<table class="table table-borderless">
+    <thead class="border-bottom font-weight-bold">
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Location</td>
+            <td>status</td>
+            <td>
+                <a href="{% url 'restaurant:restaurant_createview'  %}" class="btn btn-outline-success">
+                    <i class="fas fa-plus"></i> Add New
+                </a>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for restaurant in object_list %}
+            <tr>
+                <td>{{restaurant.id}}</td>
+                <td>{{restaurant.name}}</td>
+                <td>{{restaurant.description}}</td>
+                <td>{{restaurant.location}}</td>
+                <td>{{restaurant.get_status_display}}</td>
+                <td>
+                    <a href="{% url 'restaurant:restaurant_updateview' restaurant.id %}" class="btn text-secondary px-0">
+                        <i class="far fa-edit fa-lg"></i>
+                    </a>
+                    <form action="{% url 'restaurant:restaurant_deleteview' restaurant.id %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">
+                            <i class="far fa-trash-alt fa-lg text-danger float-right"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

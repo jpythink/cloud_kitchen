@@ -1,0 +1,65 @@
+{% extends 'base/base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h2>Restaurant Sign Up Page</h2>
+
+    <div class="container mt-4">
+    
+        <div class="p-4 m-4">  
+            <div class="col-lg-5 rounded mx-auto border pt-4">
+                <div class="text-center col">  
+                    <img 
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Shopping_cart_with_food_clip_art_2.svg/307px-Shopping_cart_with_food_clip_art_2.svg.png" alt=""
+                    class="" style="height: 150px;">
+                <!-- <hr> -->
+                <div class="display-8">Create An Account</div>
+                <hr>
+                </div>
+                <h3 hidden class="alert alert-light border rounded">Create An Account</h3>
+                <form action="{% url 'authentication:restaurant_signup' %}" method="POST">
+                    
+                    {% csrf_token %}  
+                    <!-- username -->
+                    <div class="form-group"> 
+                        {{form.username|as_crispy_field}}
+                    </div>
+
+                    <!-- firstname -->
+                    <div class="form-group">
+                        {{form.first_name|as_crispy_field}}
+                    </div>
+    
+                    <!-- last name -->
+                    <div class="form-group">
+                        {{form.last_name|as_crispy_field}}
+                    </div>
+    
+                    <!-- email -->
+                    <div class="form-group">
+                        {{form.email|as_crispy_field}}
+                    </div>
+    
+                    <!-- password1 -->
+                    <div class="form-group">
+                        {{form.password1|as_crispy_field}}
+                    </div>
+
+                    <!-- password2 -->
+                    <div class="form-group">
+                        {{form.password2|as_crispy_field}}
+                    </div>
+    
+                    <hr>
+                    <div class="form-group">
+                        <div align="center" >
+                        <a href="{% url 'authentication:login' %}">
+                                <input class="btn btn-sm btn-info" type="submit" value="Create An Account Restaurant">
+                        </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
