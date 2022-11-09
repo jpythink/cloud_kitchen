@@ -6,7 +6,7 @@ from django.views.generic import View
 
 # Apps model import
 from apps.authentication.models import CustomUsers
-from apps.restaurant.models import Food, Order
+from apps.restaurant.models import Order
 from apps.finance.models import Transaction
 
 # Django auth mixin
@@ -23,11 +23,15 @@ class CheckOutView(LoginRequiredMixin, View):
         phone = request.POST.get('phone')
         customer = request.user.id
         cart = request.session.get('cart')
-        foods = Food.get_foods_by_id(list(cart.keys()))
+        foods = (list(cart.keys()))
         print(address, phone, customer, cart, foods)
-
+        request.session['address'] = address
+        request.session['phone'] = phone
+        request.session['customer'] = customer
+        request.session['cart'] = cart
+        request.session['foods'] = foods
         
-
+        return redirect('finance:payment')
         # if 
         for food in foods:
             print(cart.get(str(food.id)))
