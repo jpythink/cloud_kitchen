@@ -12,7 +12,8 @@
     {% if error %}
     <h3>{{ error }}</h3>
     {% endif %}
-    <form method="post">
+    <h2>Total Price</h2>{{price}}
+    <!-- <form method="post">
         {% csrf_token %}
         <label for="username">Username: </label>
         <input type="text" name="username" required>
@@ -21,8 +22,43 @@
         <label for="amount">Amount: </label>
         <input type="number" name="amount" value="100">
         <input type="submit" name="submit" value="Submit" required>
-    </form>
+    </form> -->
 </body>
 
+<button type="submit" class="btn btn-success btn-block" id="rzp-button1" >Pay</button>
+
+{% if payment_id %}
+<!-- <button id="rzp-button1">Pay</button> -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_HEjhLuxzjbQpb2", // Enter the Key ID generated from the Dashboard
+    "amount": "{{payment_id.amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Cloud Kitchen",
+    "description": "Test Transaction -- payment for food",
+    "image": "https://example.com/your_logo",
+    "order_id": "{{payment_id.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "callback_url": "{% url 'finance:success' %}",
+    "prefill": {
+        "name": "cloud kitchen",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+
+{% endif %}
 
 {% endblock content %}

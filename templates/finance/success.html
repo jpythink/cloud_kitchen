@@ -1,0 +1,10 @@
+{% extends 'base/base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<h1>Thanks Your Payment has been received </h1>
+<button style="background:#82e298;color:white;" href="{% url 'restaurant:homepage' %}" >
+        Back</button>
+
+{% endblock content %}

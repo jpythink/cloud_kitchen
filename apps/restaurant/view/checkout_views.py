@@ -32,18 +32,3 @@ class CheckOutView(LoginRequiredMixin, View):
         request.session['foods'] = foods
         
         return redirect('finance:payment')
-        # if 
-        for food in foods:
-            print(cart.get(str(food.id)))
-            order = Order(customer=CustomUsers(id=customer),
-                        food=food,
-                        price=food.price,
-                        address=address,
-                        phone=phone,
-                        quantity=cart.get(str(food.id)))
-            order.save()
-        request.session['cart'] = {}
-        return redirect('restaurant:cart')
-        # else :
-            # print("not good ")
-
