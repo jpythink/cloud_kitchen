@@ -36,7 +36,9 @@ if env.bool("DJANGO_READ_DOT_ENV_FILE", default=True):
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-9@*1fh3r&h+b0wiv@b9b@yf!wk%&4s4_n0cb6vmk5=8v_@*rsn'
 SECRET_KEY = env("SECRET_KEY")
-
+STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -165,3 +167,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 AUTH_USER_MODEL = 'authentication.CustomUsers'
 
 LOGIN_URL = 'auth/login'
+

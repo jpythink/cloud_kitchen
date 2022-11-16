@@ -1,0 +1,13 @@
+{% extends 'base/base.html'%}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+{% if payment_status == "success" %}
+<h1>your payment is Done </h1>
+<button href="/" >Back To Home</button>
+{% else %}
+<h1>your payment is not Done Try again later ... </h1>
+<button href="/" >Back To Home</button>
+{% endif %}
+{% endblock content %}
