@@ -67,7 +67,7 @@ class Paymentview(View, LoginRequiredMixin):
         return redirect(checkout_session.url, code=303)
 
         #razorpay client, payment_id
-        # client = razorpay.Client(auth=("rzp_test_HEjhLuxzjbQpb2", "2O8iww11khXfilLTaVyOMS6J"))
+        # client = in secrate file
         # payment_id = client.order.create({'amount': price*100, 'currency':'INR', 'payment_capture': '1' })
         # print("payment_id : ",payment_id )
         # transaction = Transaction(made_by=customer, amount=price, payment_id= payment_id['id'])
