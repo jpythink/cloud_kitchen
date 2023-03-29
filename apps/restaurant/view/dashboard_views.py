@@ -2,6 +2,7 @@
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import PasswordChangeView
+from django.views import View
 
 # Generic views imports
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView, TemplateView
@@ -17,6 +18,9 @@ from apps.authentication.models import CustomUsers
 # Apps forms import
 from apps.restaurant.forms import RestaurantForm, FoodCategoryForm, FoodForm, OrderForm
 from apps.authentication.forms import EditUsersProfileForm, PasswordChangingForm
+
+# AI import 
+import openai
 
 
 # Dashboard User Access Permission 
@@ -220,6 +224,158 @@ class OrderUpdateView(LoginRequiredMixin, UserAccessMixin, UpdateView):
 # Create index views here.
 class IndexView(TemplateView):
     template_name = 'index.html'
+
+from django.http import HttpResponse
+# class Chatgpt(View):
+#     # template_name = 'chatgpt.html'
+#     def get(self,request):
+#         return render(request, 'index.html')
+    
+#     def post(self, request):
+#         context = {}
+
+#         #set the model
+#         model_engine = 'text-davinci-003'
+
+#         # set the maximum number of tokens(words) to generate in the response 
+#         max_tokens = 1024
+
+#         if request.method == 'POST':
+#             prompt =request.POST.get('prompt')# This is our query we getting here
+
+#             #Generate a response 
+#             completion = openai.Completion.create(engine=model_engine, prompt=prompt, max_tokens=max_tokens, n=1, stop=None, temperature=0.5)
+#             chatResponse = completion.choices[0].text
+
+#             #render the query and response to page 
+#             context = {
+#                 'chatResponse':chatResponse,
+#                 'prompt':prompt}
+#             return render (request, 'index.html', context)
+#         else:
+#             context['raise_error'] = "ERROR: Invalid request method"
+#             return HttpResponse(context['raise_error'], status=405)
+        
+from django.http import JsonResponse
+import json
+def Chatgpt(request):
+    if request.method == 'POST':
+        # print("======================================================================================")
+        # print(request)
+        # print("===============================================================================")
+        # print(type(request))
+        try:
+            data = json.loads(request.body)
+            input_text = data["input_text"]
+        except json.JSONDecodeError as e:
+            error_response_data = {
+                "error": "Invalid JSON payload",
+                "details": str(e),
+            }
+            return JsonResponse(error_response_data, status=400)
+
+        #set the model
+        model_engine = 'text-davinci-003'
+
+        # set the maximum number of tokens(words) to generate in the response 
+        max_tokens = 1024
+
+        # print("============================================================")
+        # print("all is done")
+        # print("============================================================")
+        
+
+        #Generate a response 
+        completion = openai.Completion.create(engine=model_engine, prompt=input_text, max_tokens=max_tokens, n=1, stop=None, temperature=0.5)
+        chatResponse = completion.choices[0].text
+
+        # print("============================================================")
+        # print(chatResponse)
+        # print("============================================================")
+        
+
+        response_data = {
+            "result": chatResponse,
+        }
+
+        return JsonResponse(response_data)
+    else:
+       response_data['raise_error'] = "ERROR: Invalid request method" 
+       return JsonResponse(response_data['raise_error'])
+    
+
+# def Chatgpt(request):
+#     response_data = {}
+
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body)
+#             input_text = data["input_text"]
+#         except json.JSONDecodeError as e:
+#             error_response_data = {
+#                 "error": "Invalid JSON payload",
+#                 "details": str(e),
+#             }
+#             return JsonResponse(error_response_data, status=400)
+
+#         # set the OpenAI model
+#         model_engine = 'text-davinci-003'
+
+#         # set the maximum number of tokens(words) to generate in the response
+#         max_tokens = 1024
+
+#         # generate a response
+#         completion = openai.Completion.create(
+#             engine=model_engine,
+#             prompt=input_text,
+#             max_tokens=max_tokens,
+#             n=1,
+#             stop=None,
+#             temperature=0.5
+#         )
+#         chatResponse = completion.choices[0].text
+
+#         response_data = {
+#             "result": chatResponse,
+#         }
+#     else:
+#         response_data['raise_error'] = "ERROR: Invalid request method"
+
+#     return JsonResponse(response_data)
+
+
+
+
+# Chatgpt views here.
+# class Chatgpt(View):
+#     # template_name = 'chatgpt.html'
+#     def get(self,request):
+#         return render(request, 'chatgpt.html')
+    
+    # def post(self, request):
+    #     context = {}
+
+    #     #set the model
+    #     model_engine = 'text-davinci-003'
+
+    #     # set the maximum number of tokens(words) to generate in the response 
+    #     max_tokens = 1024
+
+    #     if request.method == 'post':
+    #         prompt =request.post.get('prompt')# This is our query we getting here
+
+    #         #Generate a response 
+    #         completion = openai.Completion.create(engine=model_engine,prompt=prompt, max_tokens=max_tokens, n=1, stop=None, temperature=0.5)
+    #         chatResponse = completion.choices[0].text
+
+    #         #render the query and response to page 
+    #         context = {
+    #             'chatResponse':chatResponse,
+    #             'prompt':prompt}
+    #         return render (request, 'chatgpt.html', context)
+    #     else:
+    #         context['raise_error'] = "ERROR Occurred or something went wrong : Please Enter Valid URL"
+    #     return redirect("/")
 
 
  # Create dashboard index views here.

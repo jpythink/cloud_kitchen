@@ -2,7 +2,7 @@
 from django.urls import path
 
 # Apps views import
-from apps.restaurant.view.dashboard_views import (DashboardIndexView, IndexView, UpdateUsersProfileView, RestaurantListView,
+from apps.restaurant.view.dashboard_views import (DashboardIndexView, IndexView, Chatgpt, UpdateUsersProfileView, RestaurantListView,
 RestaurantCreateView, RestaurantUpdateView, RestaurantDeleteView, 
 FoodCategoryCreateView, FoodCategoryListView, FoodCategoryUpdateView,
 FoodCategoryDeleteView, FoodCreateView, FoodListView, FoodUpdateView, FoodDeleteView,
@@ -48,4 +48,5 @@ urlpatterns = users_urlpatterns +   [
     path('dashboard_page/', DashboardIndexView.as_view(), name='dashboard_page'),
     
     path('', IndexView.as_view(), name='homepage'),
+    path('chatgpt/', Chatgpt, name='chatgpt')
 ]  
