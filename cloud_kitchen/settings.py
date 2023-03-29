@@ -34,7 +34,6 @@ if env.bool("DJANGO_READ_DOT_ENV_FILE", default=True):
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-9@*1fh3r&h+b0wiv@b9b@yf!wk%&4s4_n0cb6vmk5=8v_@*rsn'
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
